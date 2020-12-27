@@ -1,0 +1,810 @@
+object MainForm: TMainForm
+  Left = 486
+  Height = 623
+  Top = 161
+  Width = 817
+  Caption = 'Sun'
+  ClientHeight = 623
+  ClientWidth = 817
+  OnActivate = FormActivate
+  OnCreate = FormCreate
+  LCLVersion = '2.1.0.0'
+  object gbLatitude: TGroupBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    Left = 8
+    Height = 66
+    Top = 8
+    Width = 304
+    AutoSize = True
+    BorderSpacing.Left = 8
+    BorderSpacing.Top = 8
+    Caption = 'Latitude'
+    ClientHeight = 46
+    ClientWidth = 300
+    TabOrder = 0
+    object seLatDeg: TSpinEdit
+      AnchorSideLeft.Control = gbLatitude
+      AnchorSideTop.Control = pnlNorthSouth
+      AnchorSideTop.Side = asrCenter
+      Left = 16
+      Height = 23
+      Top = 8
+      Width = 50
+      Alignment = taRightJustify
+      BorderSpacing.Left = 16
+      BorderSpacing.Bottom = 8
+      MaxValue = 90
+      MinValue = -90
+      OnChange = btnCalcClick
+      TabOrder = 0
+    end
+    object lblLatDeg: TLabel
+      AnchorSideLeft.Control = seLatDeg
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = pnlNorthSouth
+      AnchorSideTop.Side = asrCenter
+      Left = 74
+      Height = 15
+      Top = 12
+      Width = 20
+      BorderSpacing.Left = 8
+      Caption = 'deg'
+      ParentColor = False
+    end
+    object lblLatMin: TLabel
+      AnchorSideLeft.Control = seLatMin
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = pnlNorthSouth
+      AnchorSideTop.Side = asrCenter
+      Left = 205
+      Height = 15
+      Top = 12
+      Width = 21
+      BorderSpacing.Left = 8
+      Caption = 'min'
+      ParentColor = False
+    end
+    object pnlNorthSouth: TPanel
+      AnchorSideLeft.Control = lblLatMin
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = gbLatitude
+      Left = 242
+      Height = 38
+      Top = 0
+      Width = 50
+      AutoSize = True
+      BorderSpacing.Left = 16
+      BorderSpacing.Right = 8
+      BorderSpacing.Bottom = 8
+      BevelOuter = bvNone
+      ClientHeight = 38
+      ClientWidth = 50
+      TabOrder = 2
+      object rbNorth: TRadioButton
+        AnchorSideLeft.Control = pnlNorthSouth
+        AnchorSideTop.Control = pnlNorthSouth
+        Left = 0
+        Height = 19
+        Top = 0
+        Width = 49
+        Caption = 'north'
+        OnChange = btnCalcClick
+        TabOrder = 0
+      end
+      object rbSouth: TRadioButton
+        AnchorSideLeft.Control = rbNorth
+        AnchorSideTop.Control = rbNorth
+        AnchorSideTop.Side = asrBottom
+        Left = 0
+        Height = 19
+        Top = 19
+        Width = 50
+        Caption = 'south'
+        OnChange = btnCalcClick
+        TabOrder = 1
+      end
+    end
+    object seLatMin: TFloatSpinEdit
+      AnchorSideLeft.Control = lblLatDeg
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = pnlNorthSouth
+      AnchorSideTop.Side = asrCenter
+      Left = 112
+      Height = 23
+      Top = 8
+      Width = 85
+      Alignment = taRightJustify
+      BorderSpacing.Left = 18
+      DecimalPlaces = 6
+      OnChange = btnCalcClick
+      TabOrder = 1
+    end
+  end
+  object gbLongitude: TGroupBox
+    AnchorSideLeft.Control = gbLatitude
+    AnchorSideTop.Control = gbLatitude
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = gbLatitude
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 66
+    Top = 82
+    Width = 304
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    BorderSpacing.Top = 8
+    Caption = 'Longitude'
+    ClientHeight = 46
+    ClientWidth = 300
+    TabOrder = 3
+    object seLonDeg: TSpinEdit
+      AnchorSideLeft.Control = gbLongitude
+      AnchorSideTop.Control = pnlWestEast
+      AnchorSideTop.Side = asrCenter
+      Left = 16
+      Height = 23
+      Top = 8
+      Width = 50
+      Alignment = taRightJustify
+      BorderSpacing.Left = 16
+      BorderSpacing.Bottom = 8
+      MaxValue = 90
+      MinValue = -90
+      OnChange = btnCalcClick
+      TabOrder = 0
+    end
+    object lblLonDeg: TLabel
+      AnchorSideLeft.Control = seLonDeg
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = pnlWestEast
+      AnchorSideTop.Side = asrCenter
+      Left = 74
+      Height = 15
+      Top = 12
+      Width = 20
+      BorderSpacing.Left = 8
+      Caption = 'deg'
+      ParentColor = False
+    end
+    object lblLonMin: TLabel
+      AnchorSideLeft.Control = seLonMin
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = pnlWestEast
+      AnchorSideTop.Side = asrCenter
+      Left = 205
+      Height = 15
+      Top = 12
+      Width = 21
+      BorderSpacing.Left = 8
+      Caption = 'min'
+      ParentColor = False
+    end
+    object pnlWestEast: TPanel
+      AnchorSideLeft.Control = lblLonMin
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = gbLongitude
+      Left = 242
+      Height = 38
+      Top = 0
+      Width = 44
+      AutoSize = True
+      BorderSpacing.Left = 16
+      BorderSpacing.Right = 8
+      BorderSpacing.Bottom = 8
+      BevelOuter = bvNone
+      ClientHeight = 38
+      ClientWidth = 44
+      TabOrder = 2
+      object rbWest: TRadioButton
+        AnchorSideLeft.Control = pnlWestEast
+        AnchorSideTop.Control = pnlWestEast
+        Left = 0
+        Height = 19
+        Top = 0
+        Width = 44
+        Caption = 'west'
+        OnChange = btnCalcClick
+        TabOrder = 0
+      end
+      object rbEast: TRadioButton
+        AnchorSideLeft.Control = rbWest
+        AnchorSideTop.Control = rbWest
+        AnchorSideTop.Side = asrBottom
+        Left = 0
+        Height = 19
+        Top = 19
+        Width = 41
+        Caption = 'east'
+        OnChange = btnCalcClick
+        TabOrder = 1
+      end
+    end
+    object seLonMin: TFloatSpinEdit
+      AnchorSideLeft.Control = lblLonDeg
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = pnlWestEast
+      AnchorSideTop.Side = asrCenter
+      Left = 112
+      Height = 23
+      Top = 8
+      Width = 85
+      Alignment = taRightJustify
+      BorderSpacing.Left = 18
+      DecimalPlaces = 6
+      OnChange = btnCalcClick
+      TabOrder = 1
+    end
+  end
+  object gbCity: TGroupBox
+    AnchorSideLeft.Control = gbLatitude
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = gbLatitude
+    AnchorSideRight.Control = gbDate
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = gbLatitude
+    AnchorSideBottom.Side = asrBottom
+    Left = 328
+    Height = 66
+    Top = 8
+    Width = 223
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 16
+    Caption = 'City'
+    ClientHeight = 46
+    ClientWidth = 219
+    TabOrder = 1
+    object cbCity: TComboBox
+      AnchorSideLeft.Control = gbCity
+      AnchorSideTop.Control = gbCity
+      AnchorSideTop.Side = asrCenter
+      AnchorSideRight.Control = gbCity
+      AnchorSideRight.Side = asrBottom
+      Left = 8
+      Height = 23
+      Top = 12
+      Width = 203
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 8
+      BorderSpacing.Right = 8
+      ItemHeight = 15
+      OnChange = cbCityChange
+      Style = csDropDownList
+      TabOrder = 0
+    end
+  end
+  object gbDate: TGroupBox
+    AnchorSideLeft.Control = gbLongitude
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = gbCity
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Control = gbLongitude
+    AnchorSideBottom.Side = asrBottom
+    Left = 328
+    Height = 66
+    Top = 82
+    Width = 223
+    Anchors = [akTop, akLeft, akBottom]
+    AutoSize = True
+    BorderSpacing.Left = 16
+    BorderSpacing.Top = 8
+    Caption = 'Date'
+    ClientHeight = 46
+    ClientWidth = 219
+    TabOrder = 4
+    object seNumWeeks: TSpinEdit
+      AnchorSideLeft.Control = lblPlusMinusWeeks
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = gbDate
+      AnchorSideTop.Side = asrCenter
+      Left = 121
+      Height = 23
+      Top = 12
+      Width = 50
+      Alignment = taRightJustify
+      BorderSpacing.Left = 8
+      BorderSpacing.Bottom = 8
+      MaxValue = 52
+      OnChange = btnCalcClick
+      TabOrder = 1
+      Value = 7
+    end
+    object lblPlusMinusWeeks: TLabel
+      AnchorSideLeft.Control = edDate
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = gbDate
+      AnchorSideTop.Side = asrCenter
+      Left = 95
+      Height = 15
+      Top = 16
+      Width = 18
+      BorderSpacing.Left = 8
+      Caption = '+/-'
+      ParentColor = False
+    end
+    object Label2: TLabel
+      AnchorSideLeft.Control = seNumWeeks
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = gbDate
+      AnchorSideTop.Side = asrCenter
+      Left = 179
+      Height = 15
+      Top = 16
+      Width = 32
+      BorderSpacing.Left = 8
+      BorderSpacing.Right = 8
+      Caption = 'weeks'
+      ParentColor = False
+    end
+    object edDate: TDateTimePicker
+      AnchorSideLeft.Control = gbDate
+      AnchorSideTop.Control = gbDate
+      AnchorSideTop.Side = asrCenter
+      Left = 8
+      Height = 23
+      Top = 12
+      Width = 79
+      CenturyFrom = 1941
+      MaxDate = 2958465
+      MinDate = -53780
+      TabOrder = 0
+      BorderSpacing.Left = 8
+      TrailingSeparator = False
+      TextForNullDate = 'NULL'
+      LeadingZeros = True
+      Kind = dtkDate
+      TimeFormat = tf24
+      TimeDisplay = tdHMS
+      DateMode = dmComboBox
+      Date = 44192
+      Time = 0.0440068634270574
+      UseDefaultSeparators = True
+      HideDateTimeParts = []
+      MonthNames = 'Long'
+      OnChange = btnCalcClick
+    end
+  end
+  object gbTimeZone: TGroupBox
+    AnchorSideLeft.Control = gbCity
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = gbCity
+    AnchorSideBottom.Control = gbCity
+    AnchorSideBottom.Side = asrBottom
+    Left = 567
+    Height = 66
+    Top = 8
+    Width = 236
+    Anchors = [akTop, akLeft, akBottom]
+    AutoSize = True
+    BorderSpacing.Left = 16
+    BorderSpacing.Right = 8
+    Caption = 'Time zone'
+    ClientHeight = 46
+    ClientWidth = 232
+    TabOrder = 2
+    object rbUTC: TRadioButton
+      AnchorSideLeft.Control = gbTimeZone
+      AnchorSideTop.Control = gbTimeZone
+      Left = 16
+      Height = 19
+      Top = 0
+      Width = 42
+      BorderSpacing.Left = 16
+      Caption = 'UTC'
+      Checked = True
+      OnChange = rbUTCChange
+      TabOrder = 0
+      TabStop = True
+    end
+    object rbLocalTime: TRadioButton
+      AnchorSideLeft.Control = rbUTC
+      AnchorSideTop.Control = rbUTC
+      AnchorSideTop.Side = asrBottom
+      Left = 16
+      Height = 19
+      Top = 19
+      Width = 72
+      Caption = 'local time'
+      OnChange = rbLocalTimeChange
+      TabOrder = 1
+    end
+    object cbDeltaUTC: TComboBox
+      AnchorSideLeft.Control = rbLocalTime
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = rbLocalTime
+      AnchorSideTop.Side = asrCenter
+      Left = 96
+      Height = 23
+      Top = 17
+      Width = 128
+      BorderSpacing.Left = 8
+      BorderSpacing.Right = 8
+      BorderSpacing.Bottom = 8
+      Enabled = False
+      ItemHeight = 15
+      ItemIndex = 13
+      Items.Strings = (
+        'UTC-12'
+        'UTC-11'
+        'UTC-10'
+        'UTC-9'
+        'UTC-8 (PST)'
+        'UTC-7 (MST)'
+        'UTC-6 (CST)'
+        'UTC-5'
+        'UTC-4'
+        'UTC-3'
+        'UTC-2'
+        'UTC-1'
+        'UTC (GMT)'
+        'UTC+1 (MEZ)'
+        'UTC+2 (EET)'
+        'UTC+3'
+        'UTC+4'
+        'UTC+5'
+        'UTC+6'
+        'UTC+7'
+        'UTC+8'
+        'UTC+9'
+        'UTC+10'
+        'UTC+11'
+        'UTC+12'
+      )
+      OnChange = cbDeltaUTCChange
+      Style = csDropDownList
+      TabOrder = 2
+      Text = 'UTC+1 (MEZ)'
+    end
+  end
+  object btnCalc: TButton
+    AnchorSideLeft.Control = gbTimeZone
+    AnchorSideTop.Control = gbLongitude
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = Bevel1
+    Left = 567
+    Height = 25
+    Top = 103
+    Width = 110
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    Caption = 'Calculate'
+    OnClick = btnCalcClick
+    TabOrder = 5
+  end
+  object btnClose: TButton
+    AnchorSideLeft.Control = Bevel1
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = gbLongitude
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = gbTimeZone
+    AnchorSideRight.Side = asrBottom
+    Left = 693
+    Height = 25
+    Top = 103
+    Width = 110
+    Anchors = [akTop, akLeft, akRight]
+    AutoSize = True
+    Caption = 'Close'
+    OnClick = btnCloseClick
+    TabOrder = 6
+  end
+  object Bevel1: TBevel
+    AnchorSideLeft.Control = gbTimeZone
+    AnchorSideLeft.Side = asrCenter
+    Left = 677
+    Height = 37
+    Top = 91
+    Width = 16
+    Shape = bsSpacer
+  end
+  object gbToday: TGroupBox
+    AnchorSideLeft.Control = gbLongitude
+    AnchorSideTop.Control = gbLongitude
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = gbTimeZone
+    AnchorSideRight.Side = asrBottom
+    Left = 8
+    Height = 63
+    Top = 156
+    Width = 795
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 8
+    BorderSpacing.Bottom = 8
+    Caption = 'Today'
+    ChildSizing.EnlargeHorizontal = crsHomogenousSpaceResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 3
+    ClientHeight = 43
+    ClientWidth = 791
+    TabOrder = 7
+    object pnlSunrise: TPanel
+      AnchorSideTop.Side = asrCenter
+      Left = 129
+      Height = 35
+      Top = 0
+      Width = 100
+      AutoSize = True
+      BorderSpacing.Bottom = 8
+      BevelOuter = bvNone
+      ClientHeight = 35
+      ClientWidth = 100
+      TabOrder = 0
+      object Label1: TLabel
+        AnchorSideLeft.Control = pnlSunrise
+        AnchorSideTop.Control = pnlSunrise
+        AnchorSideTop.Side = asrCenter
+        Left = 0
+        Height = 15
+        Top = 10
+        Width = 41
+        Caption = 'Sunrise:'
+        ParentColor = False
+      end
+      object lblSunrise: TLabel
+        AnchorSideLeft.Control = Label1
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = pnlSunrise
+        AnchorSideTop.Side = asrCenter
+        Left = 49
+        Height = 15
+        Top = 10
+        Width = 51
+        BorderSpacing.Left = 8
+        Caption = 'lblSunrise'
+        ParentColor = False
+      end
+    end
+    object pnlNoon: TPanel
+      AnchorSideTop.Side = asrCenter
+      Left = 358
+      Height = 35
+      Top = 0
+      Width = 84
+      AutoSize = True
+      BevelOuter = bvNone
+      ClientHeight = 35
+      ClientWidth = 84
+      TabOrder = 1
+      object Label3: TLabel
+        AnchorSideLeft.Control = pnlNoon
+        AnchorSideTop.Control = pnlNoon
+        AnchorSideTop.Side = asrCenter
+        Left = 0
+        Height = 15
+        Top = 10
+        Width = 33
+        Caption = 'Noon:'
+        ParentColor = False
+      end
+      object lblNoon: TLabel
+        AnchorSideLeft.Control = Label3
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = pnlNoon
+        AnchorSideTop.Side = asrCenter
+        Left = 41
+        Height = 15
+        Top = 10
+        Width = 43
+        BorderSpacing.Left = 8
+        Caption = 'lblNoon'
+        ParentColor = False
+      end
+    end
+    object pnlSunset: TPanel
+      AnchorSideTop.Side = asrCenter
+      Left = 571
+      Height = 35
+      Top = 0
+      Width = 91
+      AutoSize = True
+      BevelOuter = bvNone
+      ClientHeight = 35
+      ClientWidth = 91
+      TabOrder = 2
+      object Label4: TLabel
+        AnchorSideLeft.Control = pnlSunset
+        AnchorSideTop.Control = pnlSunset
+        AnchorSideTop.Side = asrCenter
+        Left = 0
+        Height = 15
+        Top = 10
+        Width = 35
+        Caption = 'Sunset'
+        ParentColor = False
+      end
+      object lblSunset: TLabel
+        AnchorSideLeft.Control = Label4
+        AnchorSideLeft.Side = asrBottom
+        AnchorSideTop.Control = pnlSunset
+        AnchorSideTop.Side = asrCenter
+        Left = 43
+        Height = 15
+        Top = 10
+        Width = 48
+        BorderSpacing.Left = 8
+        Caption = 'lblSunset'
+        ParentColor = False
+      end
+    end
+  end
+  object PageControl1: TPageControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = gbToday
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 8
+    Height = 388
+    Top = 227
+    Width = 801
+    ActivePage = pgChart
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Left = 8
+    BorderSpacing.Right = 8
+    BorderSpacing.Bottom = 8
+    TabIndex = 1
+    TabOrder = 8
+    object pgTable: TTabSheet
+      Caption = 'Table'
+      ClientHeight = 360
+      ClientWidth = 793
+      object Grid: TStringGrid
+        Left = 0
+        Height = 360
+        Top = 0
+        Width = 793
+        Align = alClient
+        AutoFillColumns = True
+        Columns = <        
+          item
+            Alignment = taCenter
+            Title.Alignment = taCenter
+            Title.Caption = 'Sunrise'
+            Width = 171
+          end        
+          item
+            Alignment = taCenter
+            Title.Alignment = taCenter
+            Title.Caption = 'Noon'
+            Width = 171
+          end        
+          item
+            Alignment = taCenter
+            Title.Alignment = taCenter
+            Title.Caption = 'Sunset'
+            Width = 171
+          end        
+          item
+            Alignment = taCenter
+            Title.Alignment = taCenter
+            Title.Caption = 'Day length'
+            Width = 171
+          end>
+        DefaultColWidth = 80
+        MouseWheelOption = mwGrid
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goThumbTracking, goSmoothScroll]
+        RowCount = 1
+        TabOrder = 0
+        OnPrepareCanvas = GridPrepareCanvas
+        ColWidths = (
+          105
+          171
+          171
+          171
+          171
+        )
+        Cells = (
+          1
+          0
+          0
+          'Date'
+        )
+      end
+    end
+    object pgChart: TTabSheet
+      Caption = 'Diagram'
+      ClientHeight = 360
+      ClientWidth = 793
+      object Chart: TChart
+        Left = 0
+        Height = 360
+        Top = 0
+        Width = 661
+        AutoFocus = True
+        AxisList = <        
+          item
+            Grid.Color = clSilver
+            Marks.Format = '%2:s'
+            Marks.LabelBrush.Style = bsClear
+            Marks.Source = TimeSource
+            Marks.Style = smsLabel
+            Minors = <>
+            Title.LabelFont.Orientation = 900
+            Title.LabelBrush.Style = bsClear
+          end        
+          item
+            Grid.Color = clSilver
+            Alignment = calBottom
+            Marks.LabelFont.Orientation = 900
+            Marks.Format = '%2:s'
+            Marks.LabelBrush.Style = bsClear
+            Marks.Source = DateSource
+            Marks.Style = smsLabel
+            Minors = <>
+            Title.LabelBrush.Style = bsClear
+          end>
+        BackColor = clWhite
+        Foot.Brush.Color = clBtnFace
+        Foot.Font.Color = clBlue
+        Title.Brush.Color = clBtnFace
+        Title.Font.Color = clBlue
+        Title.Text.Strings = (
+          'TAChart'
+        )
+        Toolset = ChartToolset
+        Align = alClient
+        Color = clWhite
+        object SeriesSunrise: TLineSeries
+          Title = 'Sunrise'
+          LinePen.Color = clRed
+          LinePen.Width = 2
+        end
+        object SeriesNoon: TLineSeries
+          Title = 'Noon'
+          LinePen.Width = 2
+        end
+        object SeriesSunset: TLineSeries
+          Title = 'Sunset'
+          LinePen.Color = clGreen
+          LinePen.Width = 2
+        end
+        object SeriesDayLength: TLineSeries
+          Title = 'Day length'
+          LinePen.Color = clBlue
+          LinePen.Width = 2
+        end
+      end
+      object ChartListbox1: TChartListbox
+        Left = 661
+        Height = 360
+        Top = 0
+        Width = 132
+        Chart = Chart
+        Align = alRight
+        BorderStyle = bsNone
+        ItemHeight = 0
+        TabOrder = 1
+      end
+    end
+  end
+  object DateSource: TDateTimeIntervalChartSource
+    Left = 352
+    Top = 488
+  end
+  object TimeSource: TDateTimeIntervalChartSource
+    DateTimeFormat = 'hh:nn'
+    SuppressPrevUnit = False
+    Left = 104
+    Top = 332
+  end
+  object ChartToolset: TChartToolset
+    Left = 432
+    Top = 304
+    object ChartToolsetDataPointHintTool1: TDataPointHintTool
+      Shift = [ssCtrl]
+      DistanceMode = cdmOnlyX
+      OnHint = ChartToolsetDataPointHintTool1Hint
+      OnHintLocation = ChartToolsetDataPointHintTool1HintLocation
+    end
+    object ChartToolsetZoomDragTool1: TZoomDragTool
+      Shift = [ssLeft]
+      Brush.Style = bsClear
+    end
+    object ChartToolsetPanDragTool1: TPanDragTool
+      Shift = [ssRight]
+    end
+  end
+end
