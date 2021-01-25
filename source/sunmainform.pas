@@ -25,6 +25,8 @@ type
     ChartToolsetZoomDragTool1: TZoomDragTool;
     DateSource: TDateTimeIntervalChartSource;
     edDate: TDateTimePicker;
+    seLatDeg: TFloatSpinEdit;
+    seLonDeg: TFloatSpinEdit;
     TimeSource: TDateTimeIntervalChartSource;
     SeriesSunrise: TLineSeries;
     SeriesNoon: TLineSeries;
@@ -46,8 +48,6 @@ type
     Label2: TLabel;
     lblLatDeg: TLabel;
     lblLonDeg: TLabel;
-    lblLatMin: TLabel;
-    lblLonMin: TLabel;
     lblNoon: TLabel;
     lblSunset: TLabel;
     PageControl1: TPageControl;
@@ -62,10 +62,6 @@ type
     rbWest: TRadioButton;
     rbSouth: TRadioButton;
     rbEast: TRadioButton;
-    seLatDeg: TSpinEdit;
-    seLonDeg: TSpinEdit;
-    seLatMin: TFloatSpinEdit;
-    seLonMin: TFloatSpinEdit;
     seNumWeeks: TSpinEdit;
     pgTable: TTabSheet;
     pgChart: TTabSheet;
@@ -280,10 +276,10 @@ var
   sset: TTime;
   snoon: TTime;
 begin
-  longitude := seLonDeg.Value + seLonMin.Value/60.0;
+  longitude := seLonDeg.Value; // + seLonMin.Value/60.0;
   if rbEast.Checked then longitude := -longitude;
 
-  latitude := seLatDeg.Value + seLatMin.value/60.0;
+  latitude := seLatDeg.Value; // + seLatMin.value/60.0;
   if rbSouth.Checked then latitude := -latitude;
 
   dateStart := edDate.Date - 7.0 * seNumWeeks.Value;
@@ -352,13 +348,13 @@ var
 begin
   L := TLocation(PTrInt(CbCity.Items.Objects[CbCity.ItemIndex]));
 
-  seLonDeg.Value := trunc(abs(L.Longitude));
-  seLonMin.value := frac(abs(L.Longitude))*60.0;
+  seLonDeg.Value := abs(L.Longitude);  //trunc(abs(L.Longitude));
+  //seLonMin.value := frac(abs(L.Longitude))*60.0;
   rbWest.Checked := L.Longitude > 0;
   rbEast.Checked := not RbWest.Checked;
 
-  seLatDeg.Value := trunc(abs(L.Latitude));
-  seLatMin.value := frac(abs(L.Latitude))*60.0;
+  seLatDeg.Value := abs(L.Latitude); //trunc(abs(L.Latitude));
+//  seLatMin.value := frac(abs(L.Latitude))*60.0;
   rbNorth.Checked := L.Latitude > 0;
   rbSouth.Checked := not RbNorth.Checked;
 
