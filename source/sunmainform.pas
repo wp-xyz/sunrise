@@ -175,33 +175,6 @@ type
     Longitude, Latitude : extended;
     DeltaUTC : extended;
   end;
-                 (*
-  TLocationList = class(TStringList)
-  public
-    function  AddLocation(const ACity: String; ALatitude, ALongitude, ADeltaUTC: Double): integer;
-    procedure Clear; override;
-  end;
-
-
-function TLocationList.AddLocation(const ACity:string;
-  ALatitude, ALongitude, ADeltaUTC: Double): integer;
-var
-  L: TLocation;
-begin
-  L := TLocation.Create;
-  L.Longitude := ALongitude;
-  L.Latitude := ALatitude;
-  L.DeltaUTC := ADeltaUTC;
-  result := inherited AddObject(ACity, L);
-end;
-
-procedure TLocationList.Clear;
-var
-  i : integer;
-begin
-  for i:=Count-1 downto 0 do TLocation(Objects[i]).Free;
-  inherited Clear;
-end;             *)
 
 
 //------------------------------------------------------------------------------
@@ -241,12 +214,14 @@ end;
 
 procedure TMainForm.BuildCityList;
 begin
-  AddLocation('Munich',        48.136959,   -11.575899,        +1.0);
-  AddLocation('Graz',          47+4.6/60.0, -(15+26.9/60.0),   +1.0);
-  AddLocation('Berlin',        52.515526,   -13.377914,        +1.0);
-  AddLocation('Dresden',       51.050409,   -13.737262,        +1.0);
-  AddLocation('San Francisco', 37+46.0/60,   (122+25.0/60),    -8.0);
-  AddLocation('Tokio',         35.683,      -139.767,          +9.0);
+                                // longitude  // latitude   // UTC offset
+  AddLocation('Munich',          11.575899,   48.136959,    +1.0);
+  AddLocation('Graz',            15.439504,   47.070714,    +1.0);
+  AddLocation('Berlin',          13.377914,   52.515526,    +1.0);
+  AddLocation('Dresden',         13.737262,   51.050409,    +1.0);
+  AddLocation('San Francisco', -122.419416,   37.774929,    -8.0);
+  AddLocation('Tokio',          139.691706,   35.689487,    +9.0);
+  AddLocation('Frankfurt',        8.682127,   50.110922,    +1.0);
 end;
 
 
@@ -304,10 +279,11 @@ var
   sset: TTime;
   snoon: TTime;
 begin
-  longitude := seLonDeg.Value; // + seLonMin.Value/60.0;
-  if rbEast.Checked then longitude := -longitude;
+  // Longitude increases toward to east.
+  longitude := abs(seLonDeg.Value);
+  if rbWest.Checked then longitude := -longitude;
 
-  latitude := seLatDeg.Value; // + seLatMin.value/60.0;
+  latitude := abs(seLatDeg.Value);
   if rbSouth.Checked then latitude := -latitude;
 
   dateStart := edDate.Date - 7.0 * seNumWeeks.Value;
@@ -326,7 +302,8 @@ begin
     deltaT := integer(cbDeltaUTC.Items.Objects[cbDeltaUTC.ItemIndex]) / 240;
 
   try
-    sun := SolarStuff(trunc(now), latitude, longitude);
+    // Unit solar assumes that longitude increases towards the west.
+    sun := SolarStuff(trunc(now), latitude, -longitude);
   except
     exit;
   end;
@@ -380,13 +357,11 @@ var
 begin
   L := TLocation(PTrInt(CbCity.Items.Objects[CbCity.ItemIndex]));
 
-  seLonDeg.Value := abs(L.Longitude);  //trunc(abs(L.Longitude));
-  //seLonMin.value := frac(abs(L.Longitude))*60.0;
-  rbWest.Checked := L.Longitude > 0;
-  rbEast.Checked := not RbWest.Checked;
+  seLonDeg.Value := abs(L.Longitude);
+  rbEast.Checked := L.Longitude > 0;
+  rbWest.Checked := not RbEast.Checked;
 
-  seLatDeg.Value := abs(L.Latitude); //trunc(abs(L.Latitude));
-//  seLatMin.value := frac(abs(L.Latitude))*60.0;
+  seLatDeg.Value := abs(L.Latitude);
   rbNorth.Checked := L.Latitude > 0;
   rbSouth.Checked := not RbNorth.Checked;
 
@@ -525,16 +500,21 @@ begin
     List := TStringList.Create;
     try
       ini.ReadSection('Locations', List);
-      List.Sorted := true;
-      ClearCityList;
-      for i := 0 to List.Count-1 do
+      if List.Count = 0 then
+        BuildCityList
+      else
       begin
-        sName := List[i];
-        s := ini.ReadString('Locations', sname, '');
-        if s <> '' then
+        List.Sorted := true;
+        ClearCityList;
+        for i := 0 to List.Count-1 do
         begin
-          sa := s.Split(',');
-          AddLocation(sName, StrToFloat(sa[0], fs), StrToFloat(sa[1], fs), StrToFloat(sa[2], fs));
+          sName := List[i];
+          s := ini.ReadString('Locations', sname, '');
+          if s <> '' then
+          begin
+            sa := s.Split(',');
+            AddLocation(sName, StrToFloat(sa[0], fs), StrToFloat(sa[1], fs), StrToFloat(sa[2], fs));
+          end;
         end;
       end;
     finally
