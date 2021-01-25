@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Spin,
   ExtCtrls, EditBtn, ComCtrls, Grids, TAGraph, TASeries, TAIntervalSources,
-  TAChartListbox, TATools, DateTimePicker, Types;
+  TAChartListbox, TATools, DateTimePicker, SpinEx, Types;
 
 type
 
@@ -25,8 +25,8 @@ type
     ChartToolsetZoomDragTool1: TZoomDragTool;
     DateSource: TDateTimeIntervalChartSource;
     edDate: TDateTimePicker;
-    seLatDeg: TFloatSpinEdit;
-    seLonDeg: TFloatSpinEdit;
+    seLatDeg: TFloatSpinEditEx;
+    seLonDeg: TFloatSpinEditEx;
     TimeSource: TDateTimeIntervalChartSource;
     SeriesSunrise: TLineSeries;
     SeriesNoon: TLineSeries;
@@ -75,17 +75,24 @@ type
     procedure ChartToolsetDataPointHintTool1HintLocation(
       ATool: TDataPointHintTool; AHintSize: TSize; var APoint: TPoint);
     procedure FormActivate(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure GridPrepareCanvas(sender: TObject; aCol, aRow: Integer;
       aState: TGridDrawState);
     procedure rbLocalTimeChange(Sender: TObject);
     procedure rbUTCChange(Sender: TObject);
   private
+    procedure AddLocation(AName: string; ALongitude, ALatitude, ADeltaUTC: Double);
     procedure BuildCityList;
     procedure BuildDeltaUTC;
     procedure Calculate;
+    procedure ClearCityList;
+    procedure ReadFromIni;
+    procedure WriteToIni;
 
   public
+    procedure BeforeRun;
 
   end;
 
@@ -97,7 +104,7 @@ implementation
 {$R *.lfm}
 
 uses
-  TypInfo,
+  TypInfo, IniFiles,
   TACustomSeries,
   Solar;
 
@@ -150,6 +157,14 @@ begin
   end;
 end;
 
+function CreateIni: TCustomIniFile;
+var
+  fn: String;
+begin
+  fn := ChangeFileExt(Application.ExeName, '.ini');
+  Result := TIniFile.Create(fn);
+end;
+
 
 //------------------------------------------------------------------------------
 //  TLocationList
@@ -160,12 +175,13 @@ type
     Longitude, Latitude : extended;
     DeltaUTC : extended;
   end;
-
+                 (*
   TLocationList = class(TStringList)
   public
     function  AddLocation(const ACity: String; ALatitude, ALongitude, ADeltaUTC: Double): integer;
     procedure Clear; override;
   end;
+
 
 function TLocationList.AddLocation(const ACity:string;
   ALatitude, ALongitude, ADeltaUTC: Double): integer;
@@ -185,17 +201,37 @@ var
 begin
   for i:=Count-1 downto 0 do TLocation(Objects[i]).Free;
   inherited Clear;
-end;
+end;             *)
 
 
 //------------------------------------------------------------------------------
 //  TMainForm
 //------------------------------------------------------------------------------
 
+procedure TMainForm.AddLocation(AName: string; ALongitude, ALatitude: Double;
+  ADeltaUTC: Double);
+var
+  loc: TLocation;
+begin
+  loc := TLocation.Create;
+  loc.Longitude := ALongitude;
+  loc.Latitude := ALatitude;
+  loc.DeltaUTC := ADeltaUTC;
+  cbCity.Items.AddObject(AName, loc);
+end;
+
+
+procedure TMainForm.BeforeRun;
+begin
+  ReadFromIni;
+end;
+
+
 procedure TMainForm.btnCalcClick(Sender: TObject);
 begin
   Calculate;
 end;
+
 
 procedure TMainForm.btnCloseClick(Sender: TObject);
 begin
@@ -204,21 +240,13 @@ end;
 
 
 procedure TMainForm.BuildCityList;
-var
-  L : TLocationList;
 begin
-  L := TLocationList.Create;
-  try
-    L.AddLocation('München',       48+9.0/60.0, -(11+35.0/60.0),   +1.0);
-    L.AddLocation('Graz',          47+4.6/60.0, -(15+26.9/60.0),   +1.0);
-    L.AddLocation('Berlin',        52+28.0/60,  -(13+24.0/60),     +1.0);
-    L.AddLocation('Dresden',       51+7.0/60,   -(13+45.0/60),     +1.0);
-    L.AddLocation('San Francisco', 37+46.0/60,   (122+25.0/60),    -8.0);
-    L.AddLocation('Tokio',         35.683,      -139.767,          +9.0);
-    cbCity.Items.Assign(L);
-  finally
-    L.Free;
-  end;
+  AddLocation('Munich',        48.136959,   -11.575899,        +1.0);
+  AddLocation('Graz',          47+4.6/60.0, -(15+26.9/60.0),   +1.0);
+  AddLocation('Berlin',        52.515526,   -13.377914,        +1.0);
+  AddLocation('Dresden',       51.050409,   -13.737262,        +1.0);
+  AddLocation('San Francisco', 37+46.0/60,   (122+25.0/60),    -8.0);
+  AddLocation('Tokio',         35.683,      -139.767,          +9.0);
 end;
 
 
@@ -297,7 +325,11 @@ begin
   else
     deltaT := integer(cbDeltaUTC.Items.Objects[cbDeltaUTC.ItemIndex]) / 240;
 
-  sun := SolarStuff(trunc(now), latitude, longitude);
+  try
+    sun := SolarStuff(trunc(now), latitude, longitude);
+  except
+    exit;
+  end;
 
   LblSunrise.Caption := TimeToStr(sun.SRise + deltaT);
   LblSunset.caption := TimeToStr(sun.SSet + deltaT);
@@ -404,12 +436,31 @@ begin
   APoint.Y := APoint.Y - AHintSize.CY;
 end;
 
+procedure TMainForm.ClearCityList;
+var
+  i: Integer;
+  loc: TLocation;
+begin
+  for i := 0 to cbCity.Items.Count-1 do
+  begin
+    loc := TLocation(cbCity.Items.Objects[i]);
+    loc.Free;
+  end;
+  cbCity.Items.Clear;
+end;
+
 procedure TMainForm.FormActivate(Sender: TObject);
 begin
   Constraints.MinWidth := gbTimeZone.Left + gbTimeZone.Width + gbTimeZone.BorderSpacing.Right;
   Constraints.MaxWidth := gbTimeZone.Left + gbTimeZone.Width + gbTimeZone.BorderSpacing.Right;
   Constraints.MinHeight := (gbToday.Top + gbToday.Height) * 2;
   Width := 0;  // enforce constraints
+end;
+
+procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  if CanClose then
+    WriteToIni;
 end;
 
 procedure TMainForm.FormCreate(Sender: TObject);
@@ -423,6 +474,12 @@ begin
   lblSunset.Caption := '---';
 end;
 
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  ClearCityList;
+end;
+
+
 procedure TMainForm.GridPrepareCanvas(sender: TObject; aCol, aRow: Integer;
   aState: TGridDrawState);
 var
@@ -432,6 +489,59 @@ begin
     ts := Grid.Canvas.TextStyle;
     ts.Alignment := taCenter;
     Grid.Canvas.TextStyle := ts;
+  end;
+end;
+
+procedure TMainForm.ReadFromIni;
+var
+  ini: TCustomIniFile;
+  W, H, L, T: Integer;
+  R: TRect;
+  List: TStringList;
+  s, sname: String;
+  loc: TLocation;
+  sa: TStringArray;
+  i: Integer;
+  fs: TFormatSettings;
+begin
+  fs := FormatSettings;
+  fs.DecimalSeparator := '.';
+
+  ini := CreateIni;
+  try
+    R := Screen.WorkAreaRect;
+    L := ini.ReadInteger('MainForm', 'Left', Left);
+    T := Ini.ReadInteger('MainForm', 'Top', Top);
+    W := ini.ReadInteger('MainForm', 'Width', Width);
+    H := ini.ReadInteger('MainForm', 'Height', Height);
+    if W > R.Width then W := R.Width;
+    if H > R.Height then H := R.Height;
+    if L + W > R.Right then L := R.Right - W;
+    if L < 0 then L := 0;
+    if T + H > R.bottom then T := R.Bottom - H;
+    if T < 0 then T := 0;
+    SetBounds(L, T, W, H);
+
+    List := TStringList.Create;
+    try
+      ini.ReadSection('Locations', List);
+      List.Sorted := true;
+      ClearCityList;
+      for i := 0 to List.Count-1 do
+      begin
+        sName := List[i];
+        s := ini.ReadString('Locations', sname, '');
+        if s <> '' then
+        begin
+          sa := s.Split(',');
+          AddLocation(sName, StrToFloat(sa[0], fs), StrToFloat(sa[1], fs), StrToFloat(sa[2], fs));
+        end;
+      end;
+    finally
+      List.Free;
+    end;
+  finally
+    ini.Free;
   end;
 end;
 
@@ -447,6 +557,36 @@ begin
   Calculate;
 end;
 
+procedure TMainForm.WriteToIni;
+var
+  ini: TCustomIniFile;
+  i: Integer;
+  loc: TLocation;
+  s: String;
+  fs: TFormatSettings;
+begin
+  fs := FormatSettings;
+  fs.DecimalSeparator := '.';
+
+  ini := CreateIni;
+  try
+    if WindowState = wsNormal then
+    begin
+      ini.WriteInteger('MainForm', 'Left', Left);
+      ini.WriteInteger('MainForm', 'Top', Top);
+      ini.WriteInteger('MainForm', 'Width', Width);
+      ini.WriteInteger('MainForm', 'Height', Height);
+    end;
+    for i := 0 to cbCity.Items.Count-1 do
+    begin
+      loc := TLocation(cbCity.Items.Objects[i]);
+      s := Format('%.8f,%.8f,%.2f', [loc.Longitude, loc.Latitude, loc.DeltaUTC], fs);
+      ini.WriteString('Locations', cbCity.Items[i], s);
+    end;
+  finally
+    ini.Free;
+  end;
+end;
 
 end.
 
