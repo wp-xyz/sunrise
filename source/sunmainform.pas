@@ -308,9 +308,9 @@ begin
     exit;
   end;
 
-  LblSunrise.Caption := TimeToStr(sun.SRise + deltaT);
-  LblSunset.caption := TimeToStr(sun.SSet + deltaT);
-  LblNoon.Caption := TimeToStr(sun.SNoon + deltaT);
+  LblSunrise.Caption := FormatDateTime(FormatSettings.ShortTimeFormat, sun.SRise + deltaT);
+  LblSunset.caption := FormatDateTime(FormatSettings.ShortTimeFormat, sun.SSet + deltaT);
+  LblNoon.Caption := FormatDateTime(FormatSettings.ShortTimeFormat, sun.SNoon + deltaT);
 
   with Chart.BottomAxis do begin
     (*
@@ -327,7 +327,7 @@ begin
     date := DateStart + i - Grid.FixedRows;
     Grid.Cells[0, i] := DateToStr(date);
     try
-      sun := SolarStuff(date, latitude, longitude);
+      sun := SolarStuff(date, latitude, -longitude);
       srise := sun.SRise;
       sset := sun.SSet;
       snoon := sun.SNoon;

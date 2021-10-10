@@ -10,20 +10,20 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
-  LCLVersion = '2.1.0.0'
+  LCLVersion = '2.3.0.0'
   object gbLatitude: TGroupBox
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner
     Left = 8
     Height = 66
     Top = 8
-    Width = 212
+    Width = 210
     AutoSize = True
     BorderSpacing.Left = 8
     BorderSpacing.Top = 8
     Caption = 'Latitude'
     ClientHeight = 46
-    ClientWidth = 208
+    ClientWidth = 206
     TabOrder = 0
     object lblLatDeg: TLabel
       AnchorSideLeft.Control = seLatDeg
@@ -36,7 +36,6 @@ object MainForm: TMainForm
       Width = 20
       BorderSpacing.Left = 8
       Caption = 'deg'
-      ParentColor = False
     end
     object pnlNorthSouth: TPanel
       AnchorSideLeft.Control = lblLatDeg
@@ -45,14 +44,14 @@ object MainForm: TMainForm
       Left = 150
       Height = 38
       Top = 0
-      Width = 50
+      Width = 48
       AutoSize = True
       BorderSpacing.Left = 16
       BorderSpacing.Right = 8
       BorderSpacing.Bottom = 8
       BevelOuter = bvNone
       ClientHeight = 38
-      ClientWidth = 50
+      ClientWidth = 48
       TabOrder = 0
       object rbNorth: TRadioButton
         AnchorSideLeft.Control = pnlNorthSouth
@@ -60,7 +59,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 19
         Top = 0
-        Width = 49
+        Width = 47
         Caption = 'north'
         Checked = True
         OnChange = btnCalcClick
@@ -74,7 +73,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 19
         Top = 19
-        Width = 50
+        Width = 48
         Caption = 'south'
         OnChange = btnCalcClick
         TabOrder = 1
@@ -106,13 +105,13 @@ object MainForm: TMainForm
     Left = 8
     Height = 66
     Top = 82
-    Width = 212
+    Width = 210
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
     BorderSpacing.Top = 8
     Caption = 'Longitude'
     ClientHeight = 46
-    ClientWidth = 208
+    ClientWidth = 206
     TabOrder = 3
     object lblLonDeg: TLabel
       AnchorSideLeft.Control = seLonDeg
@@ -125,7 +124,6 @@ object MainForm: TMainForm
       Width = 20
       BorderSpacing.Left = 8
       Caption = 'deg'
-      ParentColor = False
     end
     object pnlWestEast: TPanel
       AnchorSideLeft.Control = lblLonDeg
@@ -134,14 +132,14 @@ object MainForm: TMainForm
       Left = 150
       Height = 38
       Top = 0
-      Width = 44
+      Width = 42
       AutoSize = True
       BorderSpacing.Left = 16
       BorderSpacing.Right = 8
       BorderSpacing.Bottom = 8
       BevelOuter = bvNone
       ClientHeight = 38
-      ClientWidth = 44
+      ClientWidth = 42
       TabOrder = 0
       object rbWest: TRadioButton
         AnchorSideLeft.Control = pnlWestEast
@@ -149,7 +147,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 19
         Top = 0
-        Width = 44
+        Width = 42
         Caption = 'west'
         OnChange = btnCalcClick
         TabOrder = 0
@@ -161,7 +159,7 @@ object MainForm: TMainForm
         Left = 0
         Height = 19
         Top = 19
-        Width = 41
+        Width = 39
         Caption = 'east'
         Checked = True
         OnChange = btnCalcClick
@@ -194,7 +192,7 @@ object MainForm: TMainForm
     AnchorSideRight.Side = asrBottom
     AnchorSideBottom.Control = gbLatitude
     AnchorSideBottom.Side = asrBottom
-    Left = 236
+    Left = 234
     Height = 66
     Top = 8
     Width = 223
@@ -230,7 +228,7 @@ object MainForm: TMainForm
     AnchorSideTop.Side = asrBottom
     AnchorSideBottom.Control = gbLongitude
     AnchorSideBottom.Side = asrBottom
-    Left = 236
+    Left = 234
     Height = 66
     Top = 82
     Width = 223
@@ -270,7 +268,6 @@ object MainForm: TMainForm
       Width = 18
       BorderSpacing.Left = 8
       Caption = '+/-'
-      ParentColor = False
     end
     object Label2: TLabel
       AnchorSideLeft.Control = seNumWeeks
@@ -284,7 +281,6 @@ object MainForm: TMainForm
       BorderSpacing.Left = 8
       BorderSpacing.Right = 8
       Caption = 'weeks'
-      ParentColor = False
     end
     object edDate: TDateTimePicker
       AnchorSideLeft.Control = gbDate
@@ -320,17 +316,17 @@ object MainForm: TMainForm
     AnchorSideTop.Control = gbCity
     AnchorSideBottom.Control = gbCity
     AnchorSideBottom.Side = asrBottom
-    Left = 475
+    Left = 473
     Height = 66
     Top = 8
-    Width = 236
+    Width = 234
     Anchors = [akTop, akLeft, akBottom]
     AutoSize = True
     BorderSpacing.Left = 16
     BorderSpacing.Right = 8
     Caption = 'Time zone'
     ClientHeight = 46
-    ClientWidth = 232
+    ClientWidth = 230
     TabOrder = 2
     object rbUTC: TRadioButton
       AnchorSideLeft.Control = gbTimeZone
@@ -338,7 +334,7 @@ object MainForm: TMainForm
       Left = 16
       Height = 19
       Top = 0
-      Width = 42
+      Width = 40
       BorderSpacing.Left = 16
       Caption = 'UTC'
       Checked = True
@@ -353,7 +349,7 @@ object MainForm: TMainForm
       Left = 16
       Height = 19
       Top = 19
-      Width = 72
+      Width = 70
       Caption = 'local time'
       OnChange = rbLocalTimeChange
       TabOrder = 1
@@ -363,7 +359,7 @@ object MainForm: TMainForm
       AnchorSideLeft.Side = asrBottom
       AnchorSideTop.Control = rbLocalTime
       AnchorSideTop.Side = asrCenter
-      Left = 96
+      Left = 94
       Height = 23
       Top = 17
       Width = 128
@@ -411,12 +407,13 @@ object MainForm: TMainForm
     AnchorSideTop.Control = gbLongitude
     AnchorSideTop.Side = asrCenter
     AnchorSideRight.Control = Bevel1
-    Left = 475
+    Left = 485
     Height = 25
     Top = 103
-    Width = 110
+    Width = 97
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
+    BorderSpacing.Left = 12
     Caption = 'Calculate'
     OnClick = btnCalcClick
     TabOrder = 5
@@ -428,12 +425,13 @@ object MainForm: TMainForm
     AnchorSideTop.Side = asrCenter
     AnchorSideRight.Control = gbTimeZone
     AnchorSideRight.Side = asrBottom
-    Left = 601
+    Left = 598
     Height = 25
     Top = 103
-    Width = 110
+    Width = 97
     Anchors = [akTop, akLeft, akRight]
     AutoSize = True
+    BorderSpacing.Right = 12
     Caption = 'Close'
     OnClick = btnCloseClick
     TabOrder = 6
@@ -441,7 +439,7 @@ object MainForm: TMainForm
   object Bevel1: TBevel
     AnchorSideLeft.Control = gbTimeZone
     AnchorSideLeft.Side = asrCenter
-    Left = 585
+    Left = 582
     Height = 37
     Top = 91
     Width = 16
@@ -456,7 +454,7 @@ object MainForm: TMainForm
     Left = 8
     Height = 63
     Top = 156
-    Width = 703
+    Width = 699
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 8
     BorderSpacing.Bottom = 8
@@ -466,115 +464,124 @@ object MainForm: TMainForm
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 3
     ClientHeight = 43
-    ClientWidth = 699
+    ClientWidth = 695
     TabOrder = 7
     object pnlSunrise: TPanel
       AnchorSideTop.Side = asrCenter
-      Left = 106
+      Left = 64
       Height = 35
       Top = 0
-      Width = 100
+      Width = 162
       AutoSize = True
       BorderSpacing.Bottom = 8
       BevelOuter = bvNone
       ClientHeight = 35
-      ClientWidth = 100
+      ClientWidth = 162
       TabOrder = 0
       object Label1: TLabel
         AnchorSideLeft.Control = pnlSunrise
         AnchorSideTop.Control = pnlSunrise
         AnchorSideTop.Side = asrCenter
         Left = 0
-        Height = 15
-        Top = 10
-        Width = 41
+        Height = 25
+        Top = 5
+        Width = 66
         Caption = 'Sunrise:'
-        ParentColor = False
+        Font.Height = -19
+        ParentFont = False
       end
       object lblSunrise: TLabel
         AnchorSideLeft.Control = Label1
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = pnlSunrise
         AnchorSideTop.Side = asrCenter
-        Left = 49
-        Height = 15
-        Top = 10
-        Width = 51
+        Left = 74
+        Height = 25
+        Top = 5
+        Width = 88
         BorderSpacing.Left = 8
         Caption = 'lblSunrise'
-        ParentColor = False
+        Font.Height = -19
+        Font.Style = [fsBold]
+        ParentFont = False
       end
     end
     object pnlNoon: TPanel
       AnchorSideTop.Side = asrCenter
-      Left = 312
+      Left = 290
       Height = 35
       Top = 0
-      Width = 84
+      Width = 132
       AutoSize = True
       BevelOuter = bvNone
       ClientHeight = 35
-      ClientWidth = 84
+      ClientWidth = 132
       TabOrder = 1
       object Label3: TLabel
         AnchorSideLeft.Control = pnlNoon
         AnchorSideTop.Control = pnlNoon
         AnchorSideTop.Side = asrCenter
         Left = 0
-        Height = 15
-        Top = 10
-        Width = 33
+        Height = 25
+        Top = 5
+        Width = 51
         Caption = 'Noon:'
-        ParentColor = False
+        Font.Height = -19
+        ParentFont = False
       end
       object lblNoon: TLabel
         AnchorSideLeft.Control = Label3
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = pnlNoon
         AnchorSideTop.Side = asrCenter
-        Left = 41
-        Height = 15
-        Top = 10
-        Width = 43
+        Left = 59
+        Height = 25
+        Top = 5
+        Width = 73
         BorderSpacing.Left = 8
         Caption = 'lblNoon'
-        ParentColor = False
+        Font.Height = -19
+        Font.Style = [fsBold]
+        ParentFont = False
       end
     end
     object pnlSunset: TPanel
       AnchorSideTop.Side = asrCenter
-      Left = 502
+      Left = 486
       Height = 35
       Top = 0
-      Width = 91
+      Width = 146
       AutoSize = True
       BevelOuter = bvNone
       ClientHeight = 35
-      ClientWidth = 91
+      ClientWidth = 146
       TabOrder = 2
       object Label4: TLabel
         AnchorSideLeft.Control = pnlSunset
         AnchorSideTop.Control = pnlSunset
         AnchorSideTop.Side = asrCenter
         Left = 0
-        Height = 15
-        Top = 10
-        Width = 35
+        Height = 25
+        Top = 5
+        Width = 56
         Caption = 'Sunset'
-        ParentColor = False
+        Font.Height = -19
+        ParentFont = False
       end
       object lblSunset: TLabel
         AnchorSideLeft.Control = Label4
         AnchorSideLeft.Side = asrBottom
         AnchorSideTop.Control = pnlSunset
         AnchorSideTop.Side = asrCenter
-        Left = 43
-        Height = 15
-        Top = 10
-        Width = 48
+        Left = 64
+        Height = 25
+        Top = 5
+        Width = 82
         BorderSpacing.Left = 8
         Caption = 'lblSunset'
-        ParentColor = False
+        Font.Height = -19
+        Font.Style = [fsBold]
+        ParentFont = False
       end
     end
   end
@@ -599,13 +606,13 @@ object MainForm: TMainForm
     TabOrder = 8
     object pgTable: TTabSheet
       Caption = 'Table'
-      ClientHeight = 360
-      ClientWidth = 793
+      ClientHeight = 339
+      ClientWidth = 700
       object Grid: TStringGrid
         Left = 0
-        Height = 360
+        Height = 339
         Top = 0
-        Width = 793
+        Width = 700
         Align = alClient
         AutoFillColumns = True
         Columns = <        
@@ -613,25 +620,25 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Sunrise'
-            Width = 166
+            Width = 148
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Noon'
-            Width = 166
+            Width = 148
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Sunset'
-            Width = 166
+            Width = 148
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Day length'
-            Width = 169
+            Width = 147
           end>
         DefaultColWidth = 80
         MouseWheelOption = mwGrid
@@ -641,10 +648,10 @@ object MainForm: TMainForm
         OnPrepareCanvas = GridPrepareCanvas
         ColWidths = (
           105
-          166
-          166
-          166
-          169
+          148
+          148
+          148
+          147
         )
         Cells = (
           1
