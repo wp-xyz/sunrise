@@ -620,25 +620,25 @@ object MainForm: TMainForm
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Sunrise'
-            Width = 148
+            Width = 144
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Noon'
-            Width = 148
+            Width = 144
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Sunset'
-            Width = 148
+            Width = 143
           end        
           item
             Alignment = taCenter
             Title.Alignment = taCenter
             Title.Caption = 'Day length'
-            Width = 147
+            Width = 143
           end>
         DefaultColWidth = 80
         MouseWheelOption = mwGrid
@@ -648,10 +648,10 @@ object MainForm: TMainForm
         OnPrepareCanvas = GridPrepareCanvas
         ColWidths = (
           105
-          148
-          148
-          148
-          147
+          144
+          144
+          143
+          143
         )
         Cells = (
           1
@@ -732,7 +732,6 @@ object MainForm: TMainForm
         Chart = Chart
         Align = alRight
         BorderStyle = bsNone
-        ItemHeight = 0
         TabOrder = 1
       end
     end

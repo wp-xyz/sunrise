@@ -299,7 +299,7 @@ begin
   if rbUTC.Checked then
     deltaT := 0.0
   else
-    deltaT := integer(cbDeltaUTC.Items.Objects[cbDeltaUTC.ItemIndex]) / 240;
+    deltaT := PtrInt(cbDeltaUTC.Items.Objects[cbDeltaUTC.ItemIndex]) / 240;
 
   try
     // Unit solar assumes that longitude increases towards the west.
